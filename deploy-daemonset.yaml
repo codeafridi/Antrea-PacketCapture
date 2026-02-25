@@ -26,6 +26,7 @@ subjects:
     name: capture-controller
     namespace: kube-system
 ---
+# DaemonSet to run the capture controller on each node
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
