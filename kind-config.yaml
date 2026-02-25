@@ -6,3 +6,4 @@ nodes:
   - role: control-plane
   - role: worker
 
+#kind cluster config file to disable default CNI
