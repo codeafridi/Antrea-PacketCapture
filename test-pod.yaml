@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: traffic-generator
+  namespace: default
+  labels:
+    app: traffic-generator
+spec:
+  containers:
+    - name: ping
+      image: busybox:1.36
+      command: ["sh", "-c", "while true; do ping -c1 8.8.8.8 || true; sleep 2; done"]
+  restartPolicy: Always
+

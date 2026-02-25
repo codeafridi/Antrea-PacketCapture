@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: capture-controller
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: capture-controller
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: capture-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: capture-controller
+subjects:
+  - kind: ServiceAccount
+    name: capture-controller
+    namespace: kube-system
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: capture-controller
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: capture-controller
+  template:
+    metadata:
+      labels:
+        app: capture-controller
+    spec:
+      serviceAccountName: capture-controller
+      hostPID: true
+      containers:
+        - name: controller
+          image: capture-controller:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: captures
+              mountPath: /captures
+      volumes:
+        - name: captures
+          hostPath:
+            path: /var/lib/antrea-captures
+            type: DirectoryOrCreate
+
