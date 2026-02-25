@@ -12,3 +12,4 @@ image: build
 kind-load: image
 	kind load docker-image $(IMAGE_NAME)
 
+# this is the Makefile to build the image and load it into kind
