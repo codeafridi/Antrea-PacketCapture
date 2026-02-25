@@ -14,3 +14,4 @@ USER root
 
 ENTRYPOINT ["/usr/local/bin/capture-controller"]
 
+# Entrypoint for the capture controller
