@@ -114,6 +114,7 @@ func (c *controller) onAddOrUpdate(obj interface{}) {
 		}
 	}
 }
+# this is the onAddOrUpdate function to add or update a pod
 
 func (c *controller) onDelete(obj interface{}) {
 	pod, ok := obj.(*corev1.Pod)
