@@ -12,3 +12,4 @@ spec:
       command: ["sh", "-c", "while true; do ping -c1 8.8.8.8 || true; sleep 2; done"]
   restartPolicy: Always
 
+# this is the test pod to generate traffic
