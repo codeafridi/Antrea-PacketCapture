@@ -3,7 +3,7 @@
 This repo is a small Kubernetes controller that runs **one Pod per Node** (DaemonSet).  
 It watches Pods on the **same Node** and starts / stops packet capture using `tcpdump` based on a Pod annotation.
 
-### What I built (simple)
+### What I built 
 
 - **Controller (Go)**: watches Pods on the local Node.
 - **Trigger**: add annotation **`tcpdump.antrea.io: "<N>"`** to a Pod.
@@ -37,7 +37,7 @@ Install these locally:
 - `kind`
 - `kubectl`
 - `helm`
-- `go` (1.22+)
+- `go`
 
 ### 1) Create kind cluster (disable default CNI)
 
@@ -46,7 +46,7 @@ kind create cluster --name antrea-pcap --config kind-config.yaml
 kubectl get nodes
 ```
 
-### 2) Install Antrea (Helm)
+### 2) Install Antrea 
 
 ```bash
 helm repo add antrea https://charts.antrea.io
@@ -64,27 +64,27 @@ Wait until Antrea Pods are `Running`.
 make kind-load
 ```
 
-### 4) Deploy the capture controller (DaemonSet)
+### 4) Deploy the capture controller 
 
 ```bash
 kubectl apply -f deploy-daemonset.yaml
 kubectl -n kube-system get pods -l app=capture-controller -o wide
 ```
 
-### 5) Deploy the test Pod (generates traffic)
+### 5) Test Pod  to generate traffic
 
 ```bash
 kubectl apply -f test-pod.yaml
 kubectl get pod traffic-generator -o wide
 ```
 
-### 6) Start capture by annotating the test Pod
+### 6) start capture by annotating the test Pod
 
 ```bash
 kubectl annotate pod traffic-generator tcpdump.antrea.io="5" --overwrite
 ```
 
-Find the capture controller Pod on the **same node** (PowerShell):
+Find the capture controller Pod on the **same node** :
 
 ```powershell
 $NODE = kubectl get pod traffic-generator -o jsonpath='{.spec.nodeName}'
@@ -93,15 +93,10 @@ echo $NODE
 echo $CAP_POD
 ```
 
-Check that pcap files are being created:
-
-```bash
-kubectl -n kube-system exec $CAP_POD -- sh -c "ls -l /captures"
-```
 
 ### 7) Stop capture and verify cleanup
 
-Remove the annotation (this should stop `tcpdump` and delete the files):
+Remove the annotation:
 
 ```bash
 kubectl annotate pod traffic-generator tcpdump.antrea.io-
@@ -124,7 +119,7 @@ kubectl describe pod traffic-generator > pod-describe.txt
 kubectl get pods -A > pods.txt
 ```
 
-- **`capture-files.txt`** (run while capture is active and at least one file exists)
+- **`capture-files.txt`**
 
 ```bash
 kubectl -n kube-system exec $CAP_POD -- sh -c "ls -l /captures" > capture-files.txt
