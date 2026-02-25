@@ -137,5 +137,5 @@ kubectl -n kube-system cp "$CAP_POD":/captures/capture-traffic-generator.pcap ./
 tcpdump -r capture-traffic-generator.pcap > capture-output.txt
 ```
 
-That’s it — the controller is intentionally small and easy to read, and the steps above reproduce the full “on-demand capture by annotation” flow.
+Thats it nowthe controller is small and easy to read, and the steps above reproduce the full “on demand capture by annotation” flow.
 
